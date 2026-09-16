@@ -1,3 +1,5 @@
+import {API_BASE_URL} from "./config.ts";
+
 export type Provider = {
   id: string;
   name: string;
@@ -6,7 +8,6 @@ export type Provider = {
 
 export type SetupResult = {
   webhookUrl: string;
-  provider: string;
 };
 
 export const PROVIDERS: Provider[] = [
@@ -19,20 +20,24 @@ export const PROVIDERS: Provider[] = [
  * Finishes setup for a fresh GitHub App installation: the backend generates
  * a webhook secret, records which alert provider this repo uses, and hands
  * back the URL to paste into that provider's alert settings.
- *
- * STUBBED — swap the body for a real `fetch` once the FastAPI endpoint
- * exists (e.g. POST `${API_BASE}/api/setup`). Keep the signature the same
- * so no caller has to change.
  */
 export async function completeSetup(
   installationId: string,
-  providerId: string,
 ): Promise<SetupResult> {
-  await new Promise((resolve) => setTimeout(resolve, 600));
+  const response = await fetch(API_BASE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      installation_id: installationId,
+      alert_provider: 'GLITCHTIP'
+    }),
+  });
 
-  const token = Math.random().toString(36).slice(2, 10);
-  return {
-    webhookUrl: `https://api.remedy.dev/webhook/${installationId}-${token}`,
-    provider: providerId,
-  };
+  if (!response.ok) {
+    throw new Error(`Setup failed: ${response.status} ${response.statusText}`);
+  }
+
+  return response.json();
 }

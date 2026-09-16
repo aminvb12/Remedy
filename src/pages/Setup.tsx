@@ -1,6 +1,7 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CopyField } from "../components/CopyField";
+import { Shell, StatusCard } from "../components/Shell";
 import { completeSetup, PROVIDERS, type SetupResult } from "../lib/api";
 
 export function Setup() {
@@ -14,7 +15,7 @@ export function Setup() {
   async function handleFinish() {
     if (!installationId) return;
     setStatus("loading");
-    const res = await completeSetup(installationId, providerId);
+    const res = await completeSetup(installationId);
     setResult(res);
     setStatus("done");
   }
@@ -43,7 +44,7 @@ export function Setup() {
           <p className="mt-2 text-ink/60">
             Paste this URL into your{" "}
             <span className="font-medium text-ink">
-              {providerLabel(result.provider)}
+              GLITCHTIP
             </span>{" "}
             alert settings — Remedy starts working the next time something
             breaks.
@@ -55,7 +56,7 @@ export function Setup() {
 
           <div className="mt-8 rounded-xl bg-paper p-5 text-sm text-ink/60">
             <p className="font-medium text-ink/80">
-              Where to paste it in {providerLabel(result.provider)}
+              Where to paste it in GLITCHTIP
             </p>
             <p className="mt-1 leading-relaxed">
               Settings → Alerts → create a new Alert Rule → Add Action →
@@ -119,31 +120,3 @@ export function Setup() {
   );
 }
 
-function providerLabel(id: string): string {
-  return PROVIDERS.find((p) => p.id === id)?.name ?? id;
-}
-
-function Shell({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-6">
-      <div className="w-full max-w-md">
-        <div className="mb-6 flex items-center justify-center gap-2">
-          <div className="h-6 w-6 rounded-md bg-ink" />
-          <span className="font-semibold tracking-tight text-ink">
-            remedy
-          </span>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-function StatusCard({ title, body }: { title: string; body: string }) {
-  return (
-    <div className="rounded-2xl border border-ink/10 bg-white p-8 text-center shadow-sm">
-      <h1 className="text-xl font-semibold text-ink">{title}</h1>
-      <p className="mt-2 text-sm leading-relaxed text-ink/60">{body}</p>
-    </div>
-  );
-}
