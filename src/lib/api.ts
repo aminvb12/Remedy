@@ -24,7 +24,7 @@ export const PROVIDERS: Provider[] = [
 export async function completeSetup(
   installationId: string,
 ): Promise<SetupResult> {
-  const response = await fetch(API_BASE_URL, {
+  const response = await fetch(`${API_BASE_URL}/webhooks`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
