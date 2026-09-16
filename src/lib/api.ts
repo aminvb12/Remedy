@@ -7,7 +7,7 @@ export type Provider = {
 };
 
 export type SetupResult = {
-  webhookUrl: string;
+  webhook_url: string;
 };
 
 export const PROVIDERS: Provider[] = [

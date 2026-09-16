@@ -51,7 +51,7 @@ export function Setup() {
           </p>
 
           <div className="mt-6">
-            <CopyField value={result.webhookUrl} />
+            <CopyField value={result.webhook_url} />
           </div>
 
           <div className="mt-8 rounded-xl bg-paper p-5 text-sm text-ink/60">
